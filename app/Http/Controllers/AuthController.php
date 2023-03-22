@@ -13,11 +13,10 @@ class AuthController extends Controller
         ];
         if(Auth::attempt($arr)){
             $user = Auth::user();
-            return response()->json(['data' =>  $user
-        ], 200); 
+            return response()->json(['data' =>  $user], 200); 
         }else
         {
-            return response()->json(['data' =>  $arr], 201); 
+            return response()->json(['data' => 'wrong account and password' ], 201); 
         }
     }
 }
