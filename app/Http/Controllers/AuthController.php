@@ -19,4 +19,13 @@ class AuthController extends Controller
             return response()->json(['data' => 'wrong account and password' ], 201); 
         }
     }
+    public function GetInformationUser($id){
+        $data = User::findOrFail($id);
+        if($data){
+            return response()->json(['data' =>  $data], 200); 
+        }else
+        {
+            return response()->json(['data' => 'wrong account and password' ], 201); 
+        }
+    }
 }
