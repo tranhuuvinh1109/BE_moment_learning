@@ -24,3 +24,5 @@ Route::post('/login',[AuthControllerCustom::class, 'Login']);
 Route::get('/course',[CourseController::class, 'GetAllCourse']);
 Route::get('/course/{id}',[CourseController::class, 'GetCourseDetail']);
 Route::get('/user/{id}',[AuthControllerCustom::class, 'GetInformationUser']);
+Route::post('/purchased_course',[CourseController::class, 'RegisterCourse']);
+Route::post('/check_registered_course',[CourseController::class, 'CheckRegistered']);
