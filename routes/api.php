@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController as AuthControllerCustom;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\UserController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +23,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::post('/login',[AuthControllerCustom::class, 'Login']);
+
+Route::get('/member',[UserController::class, 'GetAllMember']);
+Route::get('/teacher',[UserController::class, 'GetAllTeacher']);
+// Route::get('/user?search={query}',[UserController::class, 'Search']);
 
 Route::get('/course',[CourseController::class, 'GetAllCourse']);
 Route::get('/course/{id}',[CourseController::class, 'GetCourseDetail']);
