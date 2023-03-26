@@ -20,7 +20,7 @@ class AuthController extends Controller
         }
     }
     public function GetInformationUser($id){
-        $data = User::findOrFail($id);
+        $data = User::with('PurchasedCourse')->where('id', $id)->first();
         if($data){
             return response()->json(['data' =>  $data], 200); 
         }else

@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('plan', function (Blueprint $table) {
+        Schema::create('lesson', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('course_id')->unsigned();
-            $table->string('title');
-            $table->foreign('course_id')->references('id')->on('course');
+            $table->foreignId('course_id')->constrained('course')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('name');
+            $table->string('video');
+            $table->longText('grammar');
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('plan');
+        Schema::dropIfExists('lesson');
     }
 };

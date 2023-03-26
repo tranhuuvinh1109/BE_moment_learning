@@ -11,7 +11,7 @@ class Course extends Model
 {
     use HasFactory;
     protected $table = 'course';
-    protected $fillable = ['id','name', 'teacher','category','price','description','image','description','total_star','description'];
+    protected $fillable = ['id','name', 'teacher','category','price','description','image','total_star','created_at'];
     public $timestamp = true;
     public function lessons()
     {
