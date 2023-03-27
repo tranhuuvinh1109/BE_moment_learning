@@ -24,7 +24,7 @@ class UserController extends Controller
         }
     }
     public function Search($query){
-        $teacher = User::where('name', 'like', "%$query%")->orWhere('email', 'like', "%$query%")->get();;
+        $teacher = User::where('name', 'like', "%$search%")->orWhere('email', 'like', "%$search%")->get();;
         if($teacher){
             return response()->json(['data'=> $teacher],200);
         }else{

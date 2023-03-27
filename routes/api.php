@@ -22,7 +22,14 @@ use App\Http\Controllers\UserController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('/login',[AuthControllerCustom::class, 'Login']);
+
+Route::group(['middleware' => 'api'],function (){
+    Route::post('/login',[AuthControllerCustom::class, 'Login']);
+    Route::get('/me',[AuthControllerCustom::class, 'Me']);
+    Route::get('/user/{id}',[AuthControllerCustom::class, 'GetInformationUser']);
+
+});
+
 
 Route::get('/member',[UserController::class, 'GetAllMember']);
 Route::get('/teacher',[UserController::class, 'GetAllTeacher']);
@@ -35,6 +42,5 @@ Route::delete('/course/{id}',[CourseController::class, 'DeleteCourse']);
 Route::post('/course',[CourseController::class, 'CreateCourse']);
 
 
-Route::get('/user/{id}',[AuthControllerCustom::class, 'GetInformationUser']);
 Route::post('/purchased_course',[CourseController::class, 'RegisterCourse']);
 Route::post('/check_registered_course',[CourseController::class, 'CheckRegistered']);
