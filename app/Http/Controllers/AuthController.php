@@ -23,7 +23,8 @@ class AuthController extends Controller
         $jwt = JWTAuth::parseToken();
         $user = $jwt->authenticate();
         if($user){
-            return response()->json(['data' => $user], 200);
+            $newToken = JWTAuth::refresh($jwt);
+            return response()->json(['data' => $user, 'access_token' => $newToken], 200);
         }else{
             return response()->json(['message' => 'get information error'], 401);
         }

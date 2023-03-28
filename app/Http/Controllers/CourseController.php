@@ -21,14 +21,15 @@ class CourseController extends Controller
     }
 
     public function CreateCourse(Request $request){
-        $user = User::findOrFail($request->teacher);
-        if($user->role == 2){
+        // $user = User::findOrFail($request->teacher);
+        if(true){
             $course = new Course();
             if($request){
                 $course->name = $request->name;
                 $course->teacher = $request->teacher;
-                $course->category = $request->category;
+                $course->category = 1;
                 $course->price = $request->price;
+                $course->image = $request->image;
                 $course->description = $request->description;
                 $course->save();
                 if($course->wasRecentlyCreated){
