@@ -33,7 +33,7 @@ Route::get('/user/{id}',[AuthControllerCustom::class, 'GetInformationUser']);
 
 Route::get('/member',[UserController::class, 'GetAllMember']);
 Route::get('/teacher',[UserController::class, 'GetAllTeacher']);
-// Route::get('/user?search={query}',[UserController::class, 'Search']);
+Route::get('/search={query}',[CourseController::class, 'Search']);
 
 Route::get('/course',[CourseController::class, 'GetAllCourse']);
 Route::get('/course/{id}',[CourseController::class, 'GetCourseDetail']);

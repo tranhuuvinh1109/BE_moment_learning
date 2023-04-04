@@ -37,8 +37,10 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
+        $refreshToken = auth()->refresh($token);
         return response()->json([
             'access_token' => $token,
+            'refresh_token' => $refreshToken,
             'token_type' => 'bearer',
             'data' => $user,
             'expires_in' => auth()->factory()->getTTL() * 60,

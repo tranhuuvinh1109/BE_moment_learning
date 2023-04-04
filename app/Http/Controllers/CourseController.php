@@ -191,4 +191,13 @@ class CourseController extends Controller
             }
         }
     }
+    public function Search($param) {
+        if($param){
+            $data = Course::where('name', 'like', '%' . $param . '%')->get();
+            if($data->count() > 0){
+                return response()->json(['data' => $data , 'saerch' => $param ], 200); 
+            }
+                return response()->json(['data' =>  'error'], 400); 
+        }
+    }
 }
