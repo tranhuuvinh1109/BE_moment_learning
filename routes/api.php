@@ -23,12 +23,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['middleware' => 'api'],function (){
-    Route::post('/login',[AuthControllerCustom::class, 'Login']);
-    Route::get('/me',[AuthControllerCustom::class, 'Me']);
-    
-});
+Route::post('/login',[AuthControllerCustom::class, 'Login']);
+Route::get('/me/{id}',[AuthControllerCustom::class, 'Me']);
+Route::post('/register',[AuthControllerCustom::class, 'Register']);
 Route::get('/user/{id}',[AuthControllerCustom::class, 'GetInformationUser']);
+
 
 
 Route::get('/member',[UserController::class, 'GetAllMember']);

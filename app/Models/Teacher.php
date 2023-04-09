@@ -11,4 +11,9 @@ class Teacher extends Model
     protected $table = 'teacher';
     protected $fillable = ['id','user_is', 'degree','workplace','created_at'];
     public $timestamp = true;
+
+    public function user()
+    {
+        return $this->hasOneThrough(User::class);
+    }
 }
