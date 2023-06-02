@@ -95,7 +95,8 @@ class CourseController extends Controller
         if($courseData){
             
             if ($courseData->delete()) {
-                return response()->json(['data' =>  'delete course successfully'], 200); 
+                $data = Course::with('plans')->with('lessons')->get();
+                return response()->json(['message' =>  'delete course successfully', 'data'=>$data], 200); 
             } else {
                 return response()->json(['data' =>  'delete course fail'], 400); 
             }

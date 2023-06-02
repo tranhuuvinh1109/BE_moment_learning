@@ -26,7 +26,7 @@ class AuthController extends Controller
             return response()->json(['data' =>  $user], 200); 
         }else
         {
-            return response()->json(['data' => 'wrong account and password' ], 201); 
+            return response()->json(['data' => $arr ], 201); 
         }
     }
     public function GetInformationUser($id){
@@ -53,4 +53,5 @@ class AuthController extends Controller
             return response()->json(['message' => 'fail'], 500);
         }
     } 
+    
 }

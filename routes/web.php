@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+// use Mail;
+use App\Mail\SendEmailUsingGmail;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,4 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/send', function () {
+    Mail::to('tranhuudu113@gmail.com')->send(new SendEmailUsingGmail());
+    return 'Mail sent';
+});
+
 

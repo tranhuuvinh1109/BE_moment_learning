@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController as AuthControllerCustom;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\MailController;
 
 
 /*
@@ -27,14 +29,18 @@ Route::post('/login',[AuthControllerCustom::class, 'Login']);
 Route::get('/me/{id}',[AuthControllerCustom::class, 'Me']);
 Route::post('/register',[AuthControllerCustom::class, 'Register']);
 Route::get('/user/{id}',[AuthControllerCustom::class, 'GetInformationUser']);
+Route::post('/user/edit',[UserController::class, 'EditProfile']);
+Route::post('/user/change_pass',[UserController::class, 'changePassword']);
+Route::post('/send-mail',[MailController::class, 'sendMailPayment']);
 
 
 
 Route::get('/member',[UserController::class, 'GetAllMember']);
 Route::get('/teacher',[UserController::class, 'GetAllTeacher']);
-Route::get('/search={query}',[CourseController::class, 'Search']);
+Route::get('/search',[UserController::class, 'search']);
 
 Route::get('/course',[CourseController::class, 'GetAllCourse']);
+Route::get('/category',[CategoryController::class, 'GetAll']);
 Route::get('/course/{id}',[CourseController::class, 'GetCourseDetail']);
 Route::post('/course/{id}',[CourseController::class, 'UpdateCourse']);
 Route::delete('/course/{id}',[CourseController::class, 'DeleteCourse']);
