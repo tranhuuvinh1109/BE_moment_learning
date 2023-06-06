@@ -32,6 +32,7 @@ Route::get('/user/{id}',[AuthControllerCustom::class, 'GetInformationUser']);
 Route::post('/user/edit',[UserController::class, 'EditProfile']);
 Route::post('/user/change_pass',[UserController::class, 'changePassword']);
 Route::post('/send-mail',[MailController::class, 'sendMailPayment']);
+Route::post('/register-response',[MailController::class, 'sendMailRegisterResponse']);
 
 
 
@@ -49,3 +50,5 @@ Route::post('/course',[CourseController::class, 'CreateCourse']);
 
 Route::post('/purchased_course',[CourseController::class, 'RegisterCourse']);
 Route::post('/check_registered_course',[CourseController::class, 'CheckRegistered']);
+Route::post('/test', [MailController::class, 'Test']);
+Route::get('/test/{id}', [MailController::class, 'GetTest']);

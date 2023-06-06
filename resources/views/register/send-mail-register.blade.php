@@ -10,20 +10,17 @@
 	<h1 style="font-style: italic;color: rgb(251 146 60);">Moment Learning</h1>
 	<div style="display: flex;justify-content: center;align-items: center;">
 		<div style="border-radius: 8px;width: 250px;background-color: rgb(251 113 133);box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);">
-			<img
-				style="width: 100%;"
-				src="{{ $img }}"
-				alt="course"
-			/>
+			
 			<div style="text-align: center;color: rgb(255 255 255);">
-				<h5>Course: {{ $course }}</h5>
-				<h4>{{ $price }}$</h4>
+				<h5>Welcome to Moment Learning. Here is your information: </h5>
+				<h4>Email: {{ $email }}$</h4>
+				<h4>Username: {{ $username }}$</h4>
+				<h4>Password: {{ $password }}$</h4>
 			</div>
 		</div>
 	</div>
-	<a href="https://moment-learning.vercel.app/">Go to website</a>
 	<p>
-		Thank you for signing up for our course. Have a nice day
+		Have a nice day!
 	</p>
 </div>
 </body>
