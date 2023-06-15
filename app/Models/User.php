@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class User extends Authenticatable
 {
@@ -49,6 +50,10 @@ class User extends Authenticatable
     public function PurchasedCourse()
     {
         return $this->hasMany(PurchasedCourse::class);
+    }
+    public function blogs()
+    {
+        return $this->hasManyThrough(Blog::class, User::class, 'id', 'user_id');
     }
 
 }

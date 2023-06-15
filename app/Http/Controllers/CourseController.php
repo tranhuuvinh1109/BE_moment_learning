@@ -106,12 +106,16 @@ class CourseController extends Controller
         }
     }
 
-    public function GetCourseDetail($id){
+    public function GetCourseDetail($id, $user_id){
         $courseData =  Course::with('plans')->with('lessons')->findOrFail($id);
         if($courseData){
+            $purchasedCourse = PurchasedCourse::where('course_id', $id)
+            ->where('user_id', $user_id)
+            ->exists();
+            $courseData->check_purchased_course = $purchasedCourse;
             return response()->json(['data' =>  $courseData], 200); 
         }else{
-            return response()->json(['data' =>  'null'], 201); 
+            return response()->json(['message' => 'Get data course fail'], 400); 
         }
     }
 
@@ -176,6 +180,26 @@ class CourseController extends Controller
                     return response()->json(['data' =>  $purchasedCourse], 200); 
                 } else {
                     return response()->json(['data' =>  'insert error'], 400); 
+                }
+                
+            }
+        }
+    }
+    public function RegisterCourseGet($course_id, $user_id){
+        if($course_id && $user_id){
+            $data = PurchasedCourse::where('user_id', $user_id)->where('course_id', $course_id)->get();
+            if($data->count() > 0){
+                return response()->json(['data' => 'data exist' ], 201); 
+            }
+            else{
+                $purchasedCourse = new PurchasedCourse();
+                $purchasedCourse -> user_id = $user_id;
+                $purchasedCourse -> course_id = $course_id;
+                $purchasedCourse -> save();
+                if ($purchasedCourse->wasRecentlyCreated) {
+                    return response()->json(['data' =>  $purchasedCourse], 200); 
+                } else {
+                    return response()->json(['message' =>  'Insert error'], 400); 
                 }
                 
             }

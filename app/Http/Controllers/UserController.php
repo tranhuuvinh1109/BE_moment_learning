@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-// use App\Models\Blog;
+use App\Models\Blog;
 use App\Models\Course;
 use Illuminate\Support\Facades\Hash;
 
@@ -34,25 +34,21 @@ class UserController extends Controller
     //         return response()->json(['data'=> 'error'],400);
     //     }
     // }
-    public function search(Request $request)
-{
-    $query = $request->input('query');
+    public function search($keyword)
+    {
 
-    // Tìm kiếm blog theo tiêu đề
-    // $blogs = Blog::where('title', 'LIKE', "%$query%")->get();
+        $blogs = Blog::where('title', 'LIKE', "%$keyword%")->get();
 
-    // Tìm kiếm course theo tên
-    $courses = Course::where('name', 'LIKE', "%$query%")->get();
+        $courses = Course::where('name', 'LIKE', "%$keyword%")->get();
 
-    // Tìm kiếm user theo tên
-    $users = User::where('name', 'LIKE', "%$query%")->get();
+        $users = User::where('name', 'LIKE', "%$keyword%")->get();
 
-    return response()->json([
-        // 'blogs' => $blogs,
-        'courses' => $courses,
-        'users' => $users
-    ]);
-}
+        return response()->json([
+            'blogs' => $blogs,
+            'courses' => $courses,
+            'users' => $users
+        ], 200);
+    }
     public function EditProfile(Request $request){
         $user = User::find($request->id);
         if($user){

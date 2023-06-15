@@ -21,6 +21,12 @@ class MailController extends Controller
         
         return response()->json(['data' => $request->email, 'course' => $request->course, 'price' => $request->price], 201); 
     }
+    public function sendMailPaymentGet($email, $course, $price, $image)
+    {
+        
+        Mail::to($email)->send(new SendEmailUsingGmail($email, $course, $price, $image));
+        return response()->json(['data' => $email, 'course' => $course, 'price' => $price], 200); 
+    }
     public function sendMailRegisterResponse(Request $request)
     {
         $email = $request->input('email');
@@ -29,7 +35,7 @@ class MailController extends Controller
         
         Mail::to($email)->send(new SendMailRegister($email, $username, $password));
         
-        return response()->json(['data' => $request->email, 'username' => $request->username], 201); 
+        return response()->json(['data' => $request->email, 'username' => $request->username], 200); 
     }
     public function Test (Request $request) {
         return response()->json(['data' => $request->email], 200); 
