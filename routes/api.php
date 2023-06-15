@@ -26,9 +26,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/me', [AuthControllerCustom::class, 'Me']);
+
 Route::post('/login',[AuthControllerCustom::class, 'Login']);
 Route::get('/login/email={email}&password={password}',[AuthControllerCustom::class, 'GetLogin']);
-Route::get('/me/{id}',[AuthControllerCustom::class, 'Me']);
+// Route::get('/me/{id}',[AuthControllerCustom::class, 'Me']);
 Route::post('/register',[AuthControllerCustom::class, 'Register']);
 Route::get('/user/{id}',[AuthControllerCustom::class, 'GetInformationUser']);
 Route::post('/user/edit',[UserController::class, 'EditProfile']);
