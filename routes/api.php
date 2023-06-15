@@ -26,7 +26,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/me', [AuthControllerCustom::class, 'Me']);
+// Me($token)
+Route::get('/me&token={token}',[AuthControllerCustom::class, 'Me']);
 
 Route::post('/login',[AuthControllerCustom::class, 'Login']);
 Route::get('/login/email={email}&password={password}',[AuthControllerCustom::class, 'GetLogin']);

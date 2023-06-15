@@ -9,21 +9,38 @@ use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthController extends Controller
 {
-    public function Me(Request $request)
+    public function Me($token)
     {
-        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $personalAccessToken = PersonalAccessToken::findToken($token);
 
-        $user = User::find($token->tokenable_id);
+        if (!$personalAccessToken) {
+            // Token không tồn tại
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid token',
+            ], 401);
+        }
 
+        $user = $personalAccessToken->tokenable;
 
-        return response()->json(
-            [
-                'success' => true,
-                'message' => 'User found',
-                'data' => $user
-            ],
-            200
-        );
+        if (!$user instanceof User) {
+            // Người dùng không tồn tại hoặc không hợp lệ
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid user',
+            ], 401);
+        }
+
+        if ($user->id) {
+            $blog = User::with('blogs')->where('id', '=', $user->id)->get();
+            $user->blogs = $blog[0]->blogs;
+        }
+
+        // Người dùng hợp lệ
+        return response()->json([
+            'success' => true,
+            'data' => $user,
+        ], 200);
     }
 
 
@@ -40,9 +57,24 @@ class AuthController extends Controller
             return response()->json(['data' => $arr], 201);
         }
     }
+    // public function GetLogin($email, $password)
+    // {
+
+    //     $arr = [
+    //         'email' => $email, 'password' => $password
+    //     ];
+    //     if (Auth::attempt($arr)) {
+    //         $user = Auth::user();
+    //         $blog = User::with('blogs')->where('id', '=', $user->id)->get();
+    //         $user->blogs = $blog[0]->blogs;
+    //         return response()->json(['data' =>  $user], 200);
+    //     } else {
+    //         return response()->json(['data' => $arr], 201);
+    //     }
+    // }
+
     public function GetLogin($email, $password)
     {
-
         $arr = [
             'email' => $email, 'password' => $password
         ];
@@ -50,11 +82,25 @@ class AuthController extends Controller
             $user = Auth::user();
             $blog = User::with('blogs')->where('id', '=', $user->id)->get();
             $user->blogs = $blog[0]->blogs;
+
+            // create token
+            $token = $user->createToken('token-name')->plainTextToken;
+
+            // return response
+            return response()->json([
+                'success' => true,
+                'message' => 'User found',
+                'data' => $user,
+                'token' => $token
+            ], 200);
+
             return response()->json(['data' =>  $user], 200);
         } else {
             return response()->json(['data' => $arr], 201);
         }
     }
+
+
     public function GetInformationUser($id)
     {
         $data = User::find($id);
