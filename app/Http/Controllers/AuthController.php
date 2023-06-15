@@ -61,6 +61,8 @@ class AuthController extends Controller
         $user->password = bcrypt($request->password);
         $user->avatar = $request->avatar;
         $user->phone = $request->phone;
+        $user->address = $request->address;
+        $user->fullname = $request->fullname;
 
         if ($user->save()) {
             return response()->json(['message' => 'Register successfully'], 200);
