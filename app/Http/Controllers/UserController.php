@@ -43,11 +43,12 @@ class UserController extends Controller
 
         $users = User::where('name', 'LIKE', "%$keyword%")->get();
 
-        return response()->json([
-            'blogs' => $blogs,
+        $data = [ 'blogs' => $blogs,
             'courses' => $courses,
-            'users' => $users
-        ], 200);
+            'users' => $users,
+        ];
+    
+        return response()->json(['data' => $data], 200);
     }
     public function EditProfile(Request $request){
         $user = User::find($request->id);
