@@ -57,46 +57,33 @@ class AuthController extends Controller
             return response()->json(['data' => $arr], 201);
         }
     }
-    // public function GetLogin($email, $password)
-    // {
-
-    //     $arr = [
-    //         'email' => $email, 'password' => $password
-    //     ];
-    //     if (Auth::attempt($arr)) {
-    //         $user = Auth::user();
-    //         $blog = User::with('blogs')->where('id', '=', $user->id)->get();
-    //         $user->blogs = $blog[0]->blogs;
-    //         return response()->json(['data' =>  $user], 200);
-    //     } else {
-    //         return response()->json(['data' => $arr], 201);
-    //     }
-    // }
-
-    public function GetLogin($email, $password)
+    public function GetLogin(Request $request)
     {
-        $arr = [
-            'email' => $email, 'password' => $password
-        ];
-        if (Auth::attempt($arr)) {
-            $user = Auth::user();
-            $blog = User::with('blogs')->where('id', '=', $user->id)->get();
-            $user->blogs = $blog[0]->blogs;
-
-            // create token
-            $token = $user->createToken('token-name')->plainTextToken;
-
-            // return response
-            return response()->json([
-                'success' => true,
-                'message' => 'User found',
-                'data' => $user,
-                'token' => $token
-            ], 200);
-
-            return response()->json(['data' =>  $user], 200);
-        } else {
-            return response()->json(['data' => $arr], 201);
+        $var = $request->query('var');
+        if($var){
+            $decodedString = base64_decode($var);
+            $object = json_decode($decodedString, false);
+            $arr = [
+                'email' => $object->email, 'password' => $object->password
+            ];
+            if (Auth::attempt($arr)) {
+                $user = Auth::user();
+                $blog = User::with('blogs')->where('id', '=', $user->id)->get();
+                $user->blogs = $blog[0]->blogs;
+                $token = $user->createToken('token-name')->plainTextToken;
+                return response()->json([
+                    'success' => true,
+                    'message' => 'User found',
+                    'data' => $user,
+                    'token' => $token
+                ], 200);
+    
+                return response()->json(['data' =>  $user], 200);
+            } else {
+                return response()->json(['data' => $arr], 400);
+            }
+        }else{
+            return response()->json(['data' => $var], 400);
         }
     }
 
@@ -124,7 +111,7 @@ class AuthController extends Controller
         if ($user->save()) {
             return response()->json(['message' => 'Register successfully'], 200);
         } else {
-            return response()->json(['message' => 'fail'], 500);
+            return response()->json(['message' => 'fail'], 400);
         }
     }
 }

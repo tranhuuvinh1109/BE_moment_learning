@@ -135,12 +135,12 @@ class CourseController extends Controller
                         if (isset($lesson_item['video'])) {
                             $lesson->video = $lesson_item['video'];
                         } else {
-                            $lesson->video = null; // set default value
+                            $lesson->video = null;
                         }
                         if (isset($lesson_item['grammar'])) {
                             $lesson->grammar = $lesson_item['grammar'];
                         } else {
-                            $lesson->grammar = null; // set default value
+                            $lesson->grammar = null;
                         }
                         $lesson->save();
                     }
@@ -151,7 +151,7 @@ class CourseController extends Controller
                         if (isset($plan_item['title'])) {
                             $plan->title = $plan_item['title'];
                         } else {
-                            $plan->title = null; // set default value
+                            $plan->title = null;
                         }
                         $plan->save();
                     }
@@ -164,6 +164,8 @@ class CourseController extends Controller
             return response()->json(['data' =>  'error'], 404); 
         }
     }
+
+
 
     public function RegisterCourse(Request $request){
         if($request){
@@ -185,24 +187,30 @@ class CourseController extends Controller
             }
         }
     }
-    public function RegisterCourseGet($course_id, $user_id){
-        if($course_id && $user_id){
-            $data = PurchasedCourse::where('user_id', $user_id)->where('course_id', $course_id)->get();
-            if($data->count() > 0){
-                return response()->json(['data' => 'data exist' ], 201); 
-            }
-            else{
-                $purchasedCourse = new PurchasedCourse();
-                $purchasedCourse -> user_id = $user_id;
-                $purchasedCourse -> course_id = $course_id;
-                $purchasedCourse -> save();
-                if ($purchasedCourse->wasRecentlyCreated) {
-                    return response()->json(['data' =>  $purchasedCourse], 200); 
-                } else {
-                    return response()->json(['message' =>  'Insert error'], 400); 
+    public function RegisterCourseGet(Request $request){
+        $var = $request->query('var');
+        if($var){
+            $decodedString = base64_decode($var);
+            $object = json_decode($decodedString, false);
+            if($object->userId && $object->courseId){
+                $data = PurchasedCourse::where('user_id', $object->userId)->where('course_id', $object->courseId)->get();
+                if($data->count() > 0){
+                    return response()->json(['data' => 'data exist' ], 201); 
                 }
-                
+                else{
+                    $purchasedCourse = new PurchasedCourse();
+                    $purchasedCourse -> user_id = $object->userId;
+                    $purchasedCourse -> course_id = $object->courseId;
+                    $purchasedCourse -> save();
+                    if ($purchasedCourse->wasRecentlyCreated) {
+                        return response()->json(['data' =>  $purchasedCourse], 200); 
+                    } else {
+                        return response()->json(['message' =>  'Insert error'], 400); 
+                    }
+                }
             }
+        }else{
+            return response()->json(['message' => 'fail var'], 400);
         }
     }
     public function CheckRegistered(Request $request){

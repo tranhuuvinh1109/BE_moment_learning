@@ -11,4 +11,9 @@ class PurchasedCourse extends Model
     protected $table = 'purchased_course';
     protected $fillable = ['id','course_id', 'user_id','created_at'];
     public $timestamp = true;
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'course_id', 'id');
+    }
 }

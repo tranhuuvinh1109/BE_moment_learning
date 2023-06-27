@@ -69,6 +69,37 @@ class UserController extends Controller
             return response()->json(['data' => 'error'], 400);
         }
     }
+
+    public function EditProfileGet(Request $request)
+    {
+        $var = $request->query('var');
+        if($var){
+            $decodedString = base64_decode($var);
+            $object = json_decode($decodedString, false);
+            if($object->id){
+                $user = User::find($object->id);
+                if ($user) {
+                    $user->fullname = $object->fullname;
+                    $user->phone = $object->phone;
+                    $user->address = $object->address;
+                    $user->birthday = $object->birthday;
+                    $user->avatar = $object->avatar;
+                    if ($user->save()) {
+                        $blog = User::with('blogs')->where('id', '=', $object->id)->get();
+                        $user->blogs = $blog[0]->blogs;
+                        return response()->json(['data' => $user, 'message' => 'Edit profile succesfully'], 200);
+                    } else {
+                        return response()->json(['data' => $user, 'message' => 'Edit profile fail'], 400);
+                    }
+                } else {
+                    return response()->json(['data' => 'error dont id'], 400);
+                }
+            } else {
+                return response()->json(['data' => 'error'], 400);
+            }
+        }
+    }
+
     public function changePassword(Request $request)
     {
         $user = User::find($request->input('id'));
@@ -76,15 +107,8 @@ class UserController extends Controller
         if ($user) {
             $currentPassword = $request->input('current_password');
             $newPassword = $request->input('new_password');
-
-            // Kiểm tra mật khẩu hiện tại của người dùng
             if (Hash::check($currentPassword, $user->password)) {
-                // Mật khẩu hiện tại khớp
-
-                // Mã hóa mật khẩu mới bằng bcrypt
                 $hashedPassword = Hash::make($newPassword);
-
-                // Cập nhật mật khẩu mới cho người dùng
                 $user->password = $hashedPassword;
 
                 if ($user->save()) {
@@ -93,11 +117,9 @@ class UserController extends Controller
                     return response()->json(['message' => 'Failed to change password'], 400);
                 }
             } else {
-                // Mật khẩu hiện tại không khớp
                 return response()->json(['message' => 'Current password is incorrect'], 400);
             }
         } else {
-            // Người dùng không tồn tại
             return response()->json(['message' => 'User not found'], 404);
         }
     }
