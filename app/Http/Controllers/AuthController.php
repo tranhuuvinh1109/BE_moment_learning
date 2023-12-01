@@ -52,9 +52,19 @@ class AuthController extends Controller
         ];
         if (Auth::attempt($arr)) {
             $user = Auth::user();
-            return response()->json(['data' =>  $user], 200);
+            // $token = $user->createToken('token-name')->plainTextToken;
+            return response()->json([
+                'success' => true,
+                'message' => 'User found',
+                'data' => $user,
+                // 'token' => $token,
+                'token' => 'token',
+            ], 200);
         } else {
-            return response()->json(['data' => $arr], 201);
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid credentials',
+            ], 401);
         }
     }
     public function GetLogin(Request $request)
